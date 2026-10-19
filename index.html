@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна робота №5 — Варіант 7 (Магазин електроніки)</title>
+    <style>
+        /* 1. Налаштування шрифтів та тексту для Варіанта 7 */
+        body {
+            font-family: Tahoma, Courier, Geneva, Helvetica, monospace;
+            font-weight: 600;
+            font-style: normal;
+            font-variant: small-caps;
+            font-size: 15px;
+            font-stretch: semi-condensed;
+            text-indent: 2%;
+            text-transform: capitalize;
+            text-shadow: #888888 1px 1px 2px;
+            word-spacing: 2px;
+            letter-spacing: 1px;
+            background-color: #f4f7f6;
+            padding: 20px;
+            margin: 0;
+            widows: 3;
+            orphans: 3;
+            page: auto;
+        }
+
+        h1 {
+            font-family: Helvetica, sans-serif;
+            font-weight: bold;
+            font-stretch: expanded;
+            text-shadow: #333333 2px 2px 3px;
+        }
+
+        .sys-caption {
+            font: caption;
+            font-stretch: extra-condensed;
+        }
+
+        .main-form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 780px;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        fieldset {
+            border: 2px solid #2a75d3;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .legend-style {
+            font-weight: bold;
+            color: #2a75d3;
+            padding: 0 10px;
+        }
+
+        .form-row {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: inline-block;
+            width: 240px;
+            vertical-align: top;
+        }
+
+        input, select, textarea, button {
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .cat-select {
+            width: 260px;
+            height: 80px;
+        }
+
+        .prog-bar {
+            width: 100%;
+            height: 20px;
+        }
+
+        /* 2. Стилі для друку та пристроїв */
+        @media print {
+            @page {
+                size: auto;
+                marks: none;
+                page-break-before: always;
+            }
+        }
+
+        /* 3. Звукові (ауральні) CSS правила для Варіанта 7 */
+        @media speech {
+            .aural-info {
+                volume: x-loud;
+                pause-before: 15ms;
+                cue: url("alert.wav");
+                cue-after: url("done.wav");
+                play-during: url("bgmusic.wav") mix repeat;
+                azimuth: right-side;
+                elevation: level;
+                speech-rate: medium;
+                pitch: x-low;
+                speak-numeral: continuous;
+                speak-punctuation: none;
+            }
+            .aural-soft {
+                volume: soft;
+                speech-rate: slower;
+            }
+        }
+    </style>
+    <script>
+        // Функція контролю введення даних перед відправкою
+        function validateAndSubmit(event) {
+            var form = document.getElementById("shop_form");
+            
+            // Перевірка вбудованих HTML5 правил (required, pattern, minlength тощо)
+            if (!form.checkValidity()) {
+                alert("Увага! Перевірте коректність заповнення полів форми.");
+            } else {
+                alert("Контроль пройдено! Форму успішно підготовлено до відправки.");
+            }
+        }
+
+        // Функція динамічного підрахунку довжини введеного тексту для <output>
+        function updateSearchLength() {
+            var input = document.getElementById("search_input");
+            var output = document.getElementById("search_output");
+            output.value = input.value.length;
+        }
+    </script>
+</head>
+<body>
+
+    <h1 class="sys-caption">Замовлення товарів підприємства "TechStore"</h1>
+
+    <!-- Тег <form> з обов'язковими атрибутами Варіанта 7 -->
+    <form id="shop_form" method="post" action="#" novalidate enctype="multipart/form-data" style="border: 1px solid #ccc;" class="main-form">
+        
+        <!-- Секція пошуку -->
+        <fieldset>
+            <legend title="Секція пошуку" id="legend_search" class="legend-style">Пошук у каталозі</legend>
+            <div class="form-row">
+                <label style="color: #333;" form="shop_form" id="lbl_search" for="search_input">Пошук товару:</label>
+                <input type="search" id="search_input" name="search_query" pattern="[A-Za-zА-Яа-я0-9\s]+" value="Ультрабук" size="30" required style="padding: 5px;" minlength="3" oninput="updateSearchLength()">
+            </div>
+            <div class="form-row">
+                <label style="color: #333;" form="shop_form" id="lbl_output">Довжина запиту:</label>
+                <output lang="uk" title="Кількість введених символів" form="shop_form" for="search_input" id="search_output">9</output> символів
+            </div>
+        </fieldset>
+
+        <!-- Секція оформлення замовлення -->
+        <fieldset>
+            <legend title="Контактна інформація" id="legend_order" class="legend-style">Оформлення замовлення</legend>
+            
+            <div class="form-row">
+                <label style="color: #333;" form="shop_form" id="lbl_email" for="client_email">Email покупця:</label>
+                <input type="email" id="client_email" name="user_email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" value="client@techstore.ua" size="30" required style="border: 1px solid #888;" minlength="5">
+            </div>
+
+            <div class="form-row">
+                <label style="color: #333;" form="shop_form" id="lbl_url" for="client_url">Веб-сайт компанії:</label>
+                <input type="url" id="client_url" name="user_url" value="https://techstore.ua" size="30" required style="border: 1px solid #888;" minlength="8">
+            </div>
+
+            <div class="form-row">
+                <label style="color: #333;" form="shop_form" id="lbl_date" for="order_date">Дата отримання:</label>
+                <input type="date" id="order_date" name="delivery_date" min="2026-01-01" max="2026-12-31" value="2026-10-25" required style="padding: 3px;">
+            </div>
+
+            <div class="form-row">
+                <label style="color: #333;" form="shop_form" id="lbl_datetime" for="order_dt">Точний час доставки:</label>
+                <input type="datetime-local" id="order_dt" name="delivery_dt" min="2026-01-01T08:00" max="2026-12-31T20:00" required style="padding: 3px;">
+            </div>
+
+            <div class="form-row">
+                <label style="color: #333;" form="shop_form" id="lbl_delivery">Спосіб доставки:</label>
+                <input type="radio" id="del_courier" name="delivery_type" value="courier" required style="margin-right: 5px;"> Кур'єр
+                <input type="radio" id="del_post" name="delivery_type" value="post" style="margin-left: 15px; margin-right: 5px;"> Пошта
+            </div>
+
+            <div class="form-row">
+                <label style="color: #333;" form="shop_form" id="lbl_category" for="category_select">Категорії товарів:</label>
+                <select id="category_select" name="categories" lang="uk" dir="ltr" style="border: 1px solid #777;" multiple class="cat-select">
+                    <optgroup title="Ноутбуки та ПК" style="font-weight: bold;">
+                        <option value="laptops">Ігрові ноутбуки</option>
+                        <option value="ultrabooks">Ультрабуки</option>
+                    </optgroup>
+                    <optgroup title="Аксесуари (тимчасово недоступні)" disabled style="color: #888;">
+                        <option value="monitors">Монітори</option>
+                        <option value="keyboards">Клавіатури</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label style="color: #333;" form="shop_form" id="lbl_brand" for="brand_input">Вибір бренду:</label>
+                <input type="text" id="brand_input" name="brand_name" list="dl_brands" size="25" style="padding: 4px;">
+                <datalist id="dl_brands" title="Перелік доступних брендів" style="display: none;" lang="uk">
+                    <option value="Asus">
+                    <option value="Lenovo">
+                    <option value="Apple">
+                    <option value="Dell">
+                </datalist>
+            </div>
+        </fieldset>
+
+        <!-- Кнопки відправки -->
+        <fieldset>
+            <legend title="Підтвердження" id="legend_submit" class="legend-style">Керування формою</legend>
+            <div class="form-row">
+                <input type="submit" value="Відправити інформацію" formaction="#" height="35" max="100" min="1" pattern=".*" required style="background-color: #2a75d3; color: white; padding: 8px 15px; border: none; cursor: pointer;" onclick="validateAndSubmit(event)">
+
+                <input type="button" value="Перевірити стан" size="15" style="background-color: #555; color: white; padding: 8px 15px; border: none; margin-left: 10px; cursor: pointer;" onclick="alert('Форма готова до відправлення!')">
+            </div>
+
+            <div class="form-row">
+                <button name="btn_active" value="active_val" formenctype="multipart/form-data" style="padding: 5px 10px;">Активна кнопка</button>
+                <button name="btn_disabled" disabled value="disabled_val" formenctype="multipart/form-data" style="padding: 5px 10px; margin-left: 10px;">Заблокована кнопка</button>
+            </div>
+        </fieldset>
+    </form>
+
+    <!-- Елементи поза формою, але зв'язані з нею атрибутом form="shop_form" -->
+    <fieldset style="max-width: 780px; margin: 20px auto; background-color: #fff;">
+        <legend title="Додаткова інформація" id="legend_ext" class="legend-style">Коментарі та прогрес</legend>
+
+        <div class="form-row">
+            <label style="color: #333;" form="shop_form" id="lbl_desc" for="prod_desc">Примітки до замовлення:</label><br>
+            <textarea style="width: 95%; padding: 8px;" id="prod_desc" lang="uk" title="Поле для опису та приміток" rows="4" form="shop_form" placeholder="Вкажіть ваші побажання..."></textarea>
+        </div>
+
+        <div class="form-row">
+            <label style="color: #333;" form="shop_form" id="lbl_disabled_ta" for="dis_desc">Архівні примітки (заблоковано):</label><br>
+            <textarea style="width: 95%; padding: 8px; background-color: #eee;" id="dis_desc" lang="uk" title="Заблокована текстова область" rows="2" disabled form="shop_form">Цей блок недоступний для редагування.</textarea>
+        </div>
+
+        <div class="form-row">
+            <label style="color: #333;" form="shop_form" id="lbl_prog">Прогрес оформлення:</label><br>
+            <progress lang="uk" style="height: 20px; width: 85%;" class="prog-bar" value="90" max="100">90%</progress>
+        </div>
+
+        <details title="Додаткова інформація про гарантію" lang="uk" id="product_details">
+            <summary style="cursor: pointer; font-weight: bold; margin-top: 10px;">Умови гарантійного обслуговування</summary>
+            <p class="aural-info">На всю електроніку підприємства надається офіційна гарантія 12 місяців. Повернення здійснюється протягом 14 днів.</p>
+        </details>
+    </fieldset>
+
+</body>
+</html>
